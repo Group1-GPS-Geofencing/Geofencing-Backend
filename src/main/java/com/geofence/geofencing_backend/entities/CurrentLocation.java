@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.entities;
  * Fence entity
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 26-03-2024
- * Last Modified on: 26-03-2024
+ * Last Modified on: 28-03-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -61,6 +61,14 @@ public class CurrentLocation {
         this.latitude = latitude;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     //to string
     @Override
     public String toString() {
@@ -70,5 +78,5 @@ public class CurrentLocation {
                 ", latitude=" + latitude +
                 '}';
     }
-    
+
 }
