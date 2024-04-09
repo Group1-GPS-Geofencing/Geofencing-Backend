@@ -37,7 +37,7 @@ public class EventLogService {
     }
 
     //update Event Log
-    public EventLog updateLog(EventLog eventLog) {
+    public EventLog updateEventLog(EventLog eventLog) {
         if (eventLog.getId() == null || !eventLogRepository.existsById(eventLog.getId())) {
             throw new IllegalArgumentException("Log not found");
         }

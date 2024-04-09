@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.services;
  * Current Location Service
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 28-03-2024
+ * Last Modified on: 31-03-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -47,6 +47,11 @@ public class CurrentLocationService {
             throw new IllegalArgumentException("Location not found");
         }
         return currentLocationRepository.save(currentLocation);
+    }
+
+    //deletes current location by ID
+    public void deleteCurrentLocation(Long id) {
+        currentLocationRepository.deleteById(id);
     }
 
 }
