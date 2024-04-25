@@ -4,12 +4,18 @@ package com.geofence.geofencing_backend.entities;
  * Fence entity
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 26-03-2024
- * Last Modified on: 28-03-2024
+ * Last Modified on: 25-04-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import lombok.Data;
+import org.locationtech.jts.geom.Point;
 
+import java.sql.Timestamp;
+
+@Data
 @Entity
 @Table(name = "CurrentLocation")
 public class CurrentLocation {
@@ -27,56 +33,24 @@ public class CurrentLocation {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "longitude")
-    private Double longitude;
+    @Column(name = "time")
+    private Timestamp time;
 
-    @Column(name = "latitude")
-    private Double latitude;
+    @Column(name = "point", columnDefinition = "geometry")
+    private Point point;
 
-    //no args constructor
-    public CurrentLocation() {
+    //added no arg constructor implicitly to overcome a runtime error that requires it
+    public CurrentLocation(){
+
     }
 
     //args constructor
-    public CurrentLocation(Double longitude, Double latitude) {
-        this.longitude = longitude;
-        this.latitude = latitude;
+    @JsonCreator
+    public CurrentLocation(@JsonProperty("time") Timestamp time,
+                           @JsonProperty("point") Point point) {
+        this.time = time;
+        this.point = point;
     }
 
-    //getters and setters
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    //to string
-    @Override
-    public String toString() {
-        return "CurrentLocation{" +
-                "id=" + id +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                '}';
-    }
-
+    //getters, setters, and toString methods/ functions are handled by Lombok
 }

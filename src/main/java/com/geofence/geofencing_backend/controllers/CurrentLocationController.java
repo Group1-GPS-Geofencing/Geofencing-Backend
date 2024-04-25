@@ -4,22 +4,21 @@ package com.geofence.geofencing_backend.controllers;
  * CurrentLocation Controller
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 31-03-2024
+ * Last Modified on: 325-04-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
 import com.geofence.geofencing_backend.entities.CurrentLocation;
 import com.geofence.geofencing_backend.services.CurrentLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "/api/location")
+@RequestMapping(path = "/api/v1/location")
 public class CurrentLocationController {
 
 
@@ -34,9 +33,20 @@ public class CurrentLocationController {
 
     /*
         HTTP POST request handler
+        i.e., http://localhost:8080/api/v1/location
+
         Receives the following parameters to create a currentLocation instance
-        {"longitude": "3.111",
-        "latitude": "3.111"}
+
+        {
+            "time": "2024-04-25T12:00:00Z",
+            "point": {
+                "type": "Point",
+                "coordinates": [
+                    -10.0,
+                    20.0
+                ]
+            }
+        }
      */
     @PostMapping
     public ResponseEntity<CurrentLocation> createLocation(@RequestBody CurrentLocation location) {
@@ -47,6 +57,8 @@ public class CurrentLocationController {
 
     /*
         HTTP GET/id request handler
+        i.e., http://localhost:8080/api/v1/location/2
+
         Receives the id parameter to return a specific currentLocation instance if it exists
      */
     @GetMapping("/{id}")
@@ -62,7 +74,7 @@ public class CurrentLocationController {
 
     /*
         HTTP GET request handler
-        Receives no parameters to return a list of currentLocation instances
+        Receives no parameters to return a list of all currentLocation instances
      */
     @GetMapping
     public ResponseEntity<List<CurrentLocation>> getAllLocations() {
@@ -77,7 +89,20 @@ public class CurrentLocationController {
 
     /*
         HTTP PUT/id request handler
+        i.e., http://localhost:8080/api/v1/location/2
+
         Receives the id parameters to update a currentLocation instance by id if it exists
+
+        {
+            "time": "2024-04-25T12:00:00Z",
+            "point": {
+                "type": "Point",
+                "coordinates": [
+                    -10.0,
+                    20.0
+                ]
+            }
+        }
      */
     @PutMapping("/{id}")
     public ResponseEntity<CurrentLocation> updateLocation(@PathVariable Long id, @RequestBody CurrentLocation location) {
@@ -90,6 +115,8 @@ public class CurrentLocationController {
     /*
         HTTP DELETE/id request handler
         Receives the id parameter to delete a currentLocation instance by id if it exists
+
+        i.e., http://localhost:8080/api/v1/location/2
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {

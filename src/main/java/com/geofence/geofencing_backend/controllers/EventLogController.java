@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.controllers;
  * Log Controller
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 31-03-2024
+ * Last Modified on: 25-04-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "/api/logs")
+@RequestMapping(path = "/api/v1/logs")
 public class EventLogController {
 
 
@@ -34,11 +34,13 @@ public class EventLogController {
 
     /*
         HTTP POST request handler
+        i.e., http://localhost:8080/api/v1/logs
+
         Receives the following parameters to create a currentLocation instance
+
         {
-            "date": null,
-            "time": null,
-            "message": null,
+            "time": "2024-04-25T12:00:00Z",
+            "message": "Hello Mom",
             "fence": null
         }
      */
@@ -51,6 +53,8 @@ public class EventLogController {
 
     /*
         HTTP GET/id request handler
+        i.e., http://localhost:8080/api/v1/logs/1
+
         Receives the id parameter to return a specific eventLog instance if it exists
      */
     @GetMapping("/{id}")
@@ -66,7 +70,9 @@ public class EventLogController {
 
     /*
         HTTP GET request handler
-        Receives no parameters to return a list of eventLogs instances
+        i.e., http://localhost:8080/api/v1/logs
+
+        Receives no parameters to return a list of all eventLogs instances
      */
     @GetMapping
     public ResponseEntity<List<EventLog>> getAllEventLogs() {
@@ -80,19 +86,9 @@ public class EventLogController {
 
 
     /*
-        HTTP PUT/id request handler
-        Receives the id parameters to update an eventLog instance by id if it exists
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<EventLog> updateEventLog(@PathVariable Long id, @RequestBody EventLog eventLog) {
-        eventLog.setId(id);
-        EventLog updatedEventLog = eventLogService.updateEventLog(eventLog);
-        return ResponseEntity.ok(updatedEventLog);
-    }
-
-
-    /*
         HTTP DELETE/id request handler
+        i.e., http://localhost:8080/api/v1/logs/1
+
         Receives the id parameter to delete an eventLog  instance by id if it exists
      */
     @DeleteMapping("/{id}")

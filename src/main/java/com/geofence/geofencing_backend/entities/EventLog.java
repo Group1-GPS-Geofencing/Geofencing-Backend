@@ -4,14 +4,18 @@ package com.geofence.geofencing_backend.entities;
  * Fence entity
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 26-03-2024
- * Last Modified on: 26-03-2024
+ * Last Modified on: 25-04-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Data;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
+@Data
 @Entity
 @Table(name = "EventLog")
 public class EventLog {
@@ -29,11 +33,8 @@ public class EventLog {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "date")
-    private LocalDate date;
-
     @Column(name = "time")
-    private LocalDate time;
+    private Timestamp time;
 
     @Column(name = "message")
     private String message;
@@ -42,70 +43,20 @@ public class EventLog {
     @JoinColumn(name = "fence_id")
     private Fence fence;
 
-    //no args constructor
-    public EventLog() {
+    //added no arg constructor implicitly to overcome a runtime error that requires it
+    public EventLog(){
+
     }
 
     //args constructor
-    public EventLog(LocalDate date, LocalDate time, String message, Fence fence) {
-        this.date = date;
+    @JsonCreator
+    public EventLog(@JsonProperty("time") Timestamp time,
+                    @JsonProperty("message") String message,
+                    @JsonProperty("fence") Fence fence) {
         this.time = time;
         this.message = message;
         this.fence = fence;
     }
 
-    //getters and setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalDate getTime() {
-        return time;
-    }
-
-    public void setTime(LocalDate time) {
-        this.time = time;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Fence getFence() {
-        return fence;
-    }
-
-    public void setFence(Fence fence) {
-        this.fence = fence;
-    }
-
-    //to string
-    @Override
-    public String toString() {
-        return "EventLog{" +
-                "id=" + id +
-                ", date=" + date +
-                ", time=" + time +
-                ", message='" + message + '\'' +
-                ", fence=" + fence +
-                '}';
-    }
-
+    //getters, setters, and toString methods/ functions are handled by Lombok
 }
