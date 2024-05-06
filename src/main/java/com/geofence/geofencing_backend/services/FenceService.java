@@ -4,11 +4,11 @@ package com.geofence.geofencing_backend.services;
  * Fence Service
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 28-03-2024
+ * Last Modified on: 05-05-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
-import com.geofence.geofencing_backend.entities.CurrentLocation;
+import com.geofence.geofencing_backend.entities.Location;
 import com.geofence.geofencing_backend.entities.Fence;
 import com.geofence.geofencing_backend.repositories.FenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class FenceService {
 
     //checks if the active fence is breached or not basing on the current location
     //as of now this method will be void since Logic is not yet implemented
-    public void isFenceBreached(CurrentLocation currentLocation){
+    public void isFenceBreached(Location location){
         //TODO: Implement Logic, including method signature
     }
 

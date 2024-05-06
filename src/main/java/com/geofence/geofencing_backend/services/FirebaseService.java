@@ -6,11 +6,11 @@ package com.geofence.geofencing_backend.services;
  * Last Modified on: 02-05-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  *
- * Service for
+ * Service for Retrieving currentLocation Data from Firebase Firestore cloud service
  */
 
-import com.geofence.geofencing_backend.repositories.CurrentLocationRepository;
-import com.geofence.geofencing_backend.entities.CurrentLocation;
+import com.geofence.geofencing_backend.entities.Location;
+import com.geofence.geofencing_backend.repositories.LocationRepository;
 import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
@@ -28,7 +28,7 @@ public class FirebaseService {
     private FirebaseApp firebaseApp;
 
     @Autowired
-    private CurrentLocationRepository currentLocationRepository;
+    private LocationRepository locationRepository;
 
     /*
      * Fetches the Firestore NoSQL database and saves the retrieved items to the Backend Database
@@ -72,9 +72,9 @@ public class FirebaseService {
                 Point point = new Point(coordinates, geometryFactory);
 
 
-                // Create a new CurrentLocation entity and save it using the currentLocationRepository
-                CurrentLocation currentLocation = new CurrentLocation(time, point);
-                currentLocationRepository.save(currentLocation);
+                // Create a new Location entity and save it using the locationRepository
+                Location location = new Location(time, point);
+                locationRepository.save(location);
             }
         });
     }

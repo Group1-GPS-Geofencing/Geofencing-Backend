@@ -1,15 +1,15 @@
 package com.geofence.geofencing_backend.controllers;
 
 /*
- * CurrentLocation Controller
+ * Location Controller
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 325-04-2024
+ * Last Modified on: 05-05-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
-import com.geofence.geofencing_backend.entities.CurrentLocation;
-import com.geofence.geofencing_backend.services.CurrentLocationService;
+import com.geofence.geofencing_backend.entities.Location;
+import com.geofence.geofencing_backend.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +19,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/location")
-public class CurrentLocationController {
+public class LocationController {
 
 
     @Autowired
-    private final CurrentLocationService locationService;
+    private final LocationService locationService;
 
     //arg constructor
-    public CurrentLocationController(CurrentLocationService locationService) {
+    public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
 
@@ -35,7 +35,7 @@ public class CurrentLocationController {
         HTTP POST request handler
         i.e., http://localhost:8080/api/v1/location
 
-        Receives the following parameters to create a currentLocation instance
+        Receives the following parameters to create a location instance
 
         {
             "time": "2024-04-25T12:00:00Z",
@@ -49,8 +49,8 @@ public class CurrentLocationController {
         }
      */
     @PostMapping
-    public ResponseEntity<CurrentLocation> createLocation(@RequestBody CurrentLocation location) {
-        CurrentLocation createdLocation = locationService.createLocation(location);
+    public ResponseEntity<Location> createLocation(@RequestBody Location location) {
+        Location createdLocation = locationService.createLocation(location);
         return new ResponseEntity<>(createdLocation, HttpStatus.CREATED);
     }
 
@@ -59,11 +59,11 @@ public class CurrentLocationController {
         HTTP GET/id request handler
         i.e., http://localhost:8080/api/v1/location/2
 
-        Receives the id parameter to return a specific currentLocation instance if it exists
+        Receives the id parameter to return a specific location instance if it exists
      */
     @GetMapping("/{id}")
-    public ResponseEntity<CurrentLocation> getLocationById(@PathVariable Long id) {
-        CurrentLocation location = locationService.getCurrentLocationById(id);
+    public ResponseEntity<Location> getLocationById(@PathVariable Long id) {
+        Location location = locationService.getCurrentLocationById(id);
         if (location != null) {
             return ResponseEntity.ok(location);
         } else {
@@ -74,11 +74,11 @@ public class CurrentLocationController {
 
     /*
         HTTP GET request handler
-        Receives no parameters to return a list of all currentLocation instances
+        Receives no parameters to return a list of all location instances
      */
     @GetMapping
-    public ResponseEntity<List<CurrentLocation>> getAllLocations() {
-        List<CurrentLocation> locations = locationService.getAllLocations();
+    public ResponseEntity<List<Location>> getAllLocations() {
+        List<Location> locations = locationService.getAllLocations();
         if (!locations.isEmpty()) {
             return ResponseEntity.ok(locations);
         } else {
@@ -91,7 +91,7 @@ public class CurrentLocationController {
         HTTP PUT/id request handler
         i.e., http://localhost:8080/api/v1/location/2
 
-        Receives the id parameters to update a currentLocation instance by id if it exists
+        Receives the id parameters to update a location instance by id if it exists
 
         {
             "time": "2024-04-25T12:00:00Z",
@@ -105,16 +105,16 @@ public class CurrentLocationController {
         }
      */
     @PutMapping("/{id}")
-    public ResponseEntity<CurrentLocation> updateLocation(@PathVariable Long id, @RequestBody CurrentLocation location) {
+    public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody Location location) {
         location.setId(id);
-        CurrentLocation updatedLocation = locationService.updateCurrentLocation(location);
+        Location updatedLocation = locationService.updateCurrentLocation(location);
         return ResponseEntity.ok(updatedLocation);
     }
 
 
     /*
         HTTP DELETE/id request handler
-        Receives the id parameter to delete a currentLocation instance by id if it exists
+        Receives the id parameter to delete a location instance by id if it exists
 
         i.e., http://localhost:8080/api/v1/location/2
      */
