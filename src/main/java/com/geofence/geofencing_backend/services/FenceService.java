@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.services;
  * Fence Service
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 05-05-2024
+ * Last Modified on: 16-05-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -56,12 +56,6 @@ public class FenceService {
     //delete fence
     public void deleteFence(Long id){
         fenceRepository.deleteById(id);
-    }
-
-    //checks if the active fence is breached or not basing on the current location
-    //as of now this method will be void since Logic is not yet implemented
-    public void isFenceBreached(Location location){
-        //TODO: Implement Logic, including method signature
     }
 
 }

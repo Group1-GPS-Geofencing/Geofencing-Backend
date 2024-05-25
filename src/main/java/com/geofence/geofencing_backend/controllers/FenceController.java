@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.controllers;
  * Fence Controller
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 25-04-2024
+ * Last Modified on: 25-05-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -43,24 +43,28 @@ public class FenceController {
             "boundary": {
                 "type": "Polygon",
                 "coordinates": [
+                  [
                     [
-                        [
-                            10.0,
-                            20.0
-                        ],
-                        [
-                            15.0,
-                            25.0
-                        ],
-                        [
-                            20.0,
-                            30.0
-                        ],
-                        [
-                            10.0,
-                            20.0
-                        ]
+                      35.33707220200199,
+                      -15.387612283215404
+                    ],
+                    [
+                      35.33670930261826,
+                      -15.387952247425758
+                    ],
+                    [
+                      35.33686244101247,
+                      -15.388081284787773
+                    ],
+                    [
+                      35.337222766642924,
+                      -15.387728913335536
+                    ],
+                    [
+                      35.33707220200199,
+                      -15.387612283215404
                     ]
+                  ]
                 ]
             },
             "is_active": true
@@ -116,25 +120,30 @@ public class FenceController {
             "description": "An updated description of my fence 1",
             "boundary": {
                 "type": "Polygon",
+                "coordinates":
                 "coordinates": [
+                  [
                     [
-                        [
-                            10.0,
-                            20.0
-                        ],
-                        [
-                            15.0,
-                            25.0
-                        ],
-                        [
-                            20.0,
-                            30.0
-                        ],
-                        [
-                            10.0,
-                            20.0
-                        ]
+                      35.33707220200199,
+                      -15.387612283215404
+                    ],
+                    [
+                      35.33670930261826,
+                      -15.387952247425758
+                    ],
+                    [
+                      35.33686244101247,
+                      -15.388081284787773
+                    ],
+                    [
+                      35.337222766642924,
+                      -15.387728913335536
+                    ],
+                    [
+                      35.33707220200199,
+                      -15.387612283215404
                     ]
+                  ]
                 ]
             },
             "is_active": false
