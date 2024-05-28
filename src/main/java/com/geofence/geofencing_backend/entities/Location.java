@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.entities;
  * Location entity
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 26-03-2024
- * Last Modified on: 05-05-2024
+ * Last Modified on: 28-05-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -38,6 +38,14 @@ public class Location {
 
     @Column(name = "point", columnDefinition = "geometry")
     private Point point;
+
+    // Assuming many locations can belong to one route,
+    // FetchType.LAZY indicates that the route information will be fetched lazily when accessed
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_id", nullable = true)
+    @JsonBackReference
+    private Route route;
+
 
     //added no arg constructor implicitly to overcome a runtime error that requires it
     public Location(){

@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.services;
  * Fence Service
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 16-05-2024
+ * Last Modified on: 28-05-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
