@@ -8,14 +8,17 @@ RUN mvn dependency:go-offline
 
 # Copy the rest of the project files
 COPY src ./src
+COPY . .
 
 # Build the project
 RUN mvn clean package -DskipTests
 
+# Debugging: List the contents of the target directory to verify JAR creation
+RUN ls -la /app/target
 
 FROM openjdk:17.0.1-jdk-slim
 WORKDIR /app
-COPY --from=build /app/target/geofence-0.0.1-SNAPSHOT.jar geofence.jar
+COPY --from=build /app/target/geofencing_backend-0.0.1-SNAPSHOT.jar /app/geofence.jar
 
 
 # Script to decode environment variables and create JSON files
