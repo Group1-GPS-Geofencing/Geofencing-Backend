@@ -20,6 +20,8 @@ FROM openjdk:17.0.1-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/geofencing_backend-0.0.1-SNAPSHOT.jar /app/geofence.jar
 
+# Create the necessary directories
+RUN mkdir -p /app/config/api_keys
 
 # Script to decode environment variables and create JSON files
 COPY create_keys.sh /app/create_keys.sh
