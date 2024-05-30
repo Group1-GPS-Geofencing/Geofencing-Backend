@@ -1,7 +1,15 @@
 # Build the Application
 FROM maven:3-openjdk-17 AS build
 WORKDIR /app
-COPY . .
+
+# Copy only the pom.xml first and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy the rest of the project files
+COPY src ./src
+
+# Build the project
 RUN mvn clean package -DskipTests
 
 
