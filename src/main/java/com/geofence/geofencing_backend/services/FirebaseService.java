@@ -107,7 +107,7 @@ public class FirebaseService {
                     logger.info("added location to route");
                     routeService.updateRouteWithLocationCoordinates(route, point);
 
-                    fenceMonitoringService.monitorFenceEntryExit(location, twilioSMSService);
+                    fenceMonitoringService.monitorFenceEntryExit(location);
 
                     logger.info("Saved Location: " + location);
                     logger.info("Associated Route: " + location.getRoute());
