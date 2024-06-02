@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "/api/v1/location")
+@RequestMapping(path = "/api/v1/location", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LocationController {
 
 
@@ -48,7 +48,7 @@ public class LocationController {
             }
         }
      */
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Location> createLocation(@RequestBody Location location) {
         Location createdLocation = locationService.createLocation(location);
         return new ResponseEntity<>(createdLocation, HttpStatus.CREATED);
@@ -104,7 +104,7 @@ public class LocationController {
             }
         }
      */
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody Location location) {
         location.setId(id);
         Location updatedLocation = locationService.updateCurrentLocation(location);
@@ -118,7 +118,7 @@ public class LocationController {
 
         i.e., http://localhost:8080/api/v1/location/2
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
         locationService.deleteCurrentLocation(id);
         return ResponseEntity.noContent().build();

@@ -22,21 +22,27 @@ public class Fence {
 
     @Id
     @Column(name = "id")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "name")
+    @JsonProperty("name")
     private String name;
 
     @Column(name = "description")
+    @JsonProperty("description")
     private String description;
 
     @Column(name = "boundary", columnDefinition = "geometry")
+    @JsonProperty("boundary")
     private Polygon boundary;
 
     @Column(name = "is_active")
+    @JsonProperty("is_active")
     private Boolean isActive;
 
     @OneToMany(mappedBy = "fence", cascade = CascadeType.ALL)
+    @JsonProperty("fence")
     private List<EventLog> logs;
 
 

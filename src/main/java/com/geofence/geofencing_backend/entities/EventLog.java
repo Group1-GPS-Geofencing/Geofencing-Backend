@@ -31,16 +31,20 @@ public class EventLog {
             generator = "log_sequence"
     )
     @Column(name = "id")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "time")
+    @JsonProperty("time")
     private Timestamp time;
 
     @Column(name = "message")
+    @JsonProperty("message")
     private String message;
 
     @ManyToOne
     @JoinColumn(name = "fence_id")
+    @JsonProperty("fence_id")
     private Fence fence;
 
     //added no arg constructor implicitly to overcome a runtime error that requires it

@@ -12,6 +12,7 @@ import com.geofence.geofencing_backend.entities.EventLog;
 import com.geofence.geofencing_backend.services.EventLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "/api/v1/logs")
+@RequestMapping(path = "/api/v1/logs", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EventLogController {
 
 
@@ -44,7 +45,7 @@ public class EventLogController {
             "fence": null
         }
      */
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EventLog> createLocation(@RequestBody EventLog eventLog) {
         EventLog createdEventLog = eventLogService.createEventLog(eventLog);
         return new ResponseEntity<>(createdEventLog, HttpStatus.CREATED);
@@ -91,7 +92,7 @@ public class EventLogController {
 
         Receives the id parameter to delete an eventLog  instance by id if it exists
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteEventLog(@PathVariable Long id) {
         eventLogService.deleteEventLog(id);
         return ResponseEntity.noContent().build();

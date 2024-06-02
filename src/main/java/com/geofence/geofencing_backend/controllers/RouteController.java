@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/route")
+@RequestMapping(path = "/api/v1/route", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RouteController {
 
     @Autowired
@@ -76,7 +76,7 @@ public class RouteController {
             }
         }
      */
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Route> createRoute(@RequestBody Route route) {
         Route createdRoute = routeService.createRoute(route);
         return new ResponseEntity<>(createdRoute, HttpStatus.CREATED);
@@ -121,7 +121,7 @@ public class RouteController {
         {
         }
      */
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Route> updateRoute(@PathVariable Long id, @RequestBody Route route) {
         route.setId(id);
         Route updatedRoute = routeService.updateRoute(route);

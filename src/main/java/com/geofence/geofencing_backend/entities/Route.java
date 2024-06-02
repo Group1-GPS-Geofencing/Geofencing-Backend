@@ -24,18 +24,23 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "name")
+    @JsonProperty("name")
     private String name;
 
     @Column(name = "date")
+    @JsonProperty("start_time")
     private Timestamp date;
 
     @OneToMany(mappedBy = "route", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @JsonProperty("locations")
     private List<Location> locations = new ArrayList<>();
 
     @Column(name = "points", columnDefinition = "geometry")
+    @JsonProperty("points")
     private LineString points;
 
     //Logger for logging

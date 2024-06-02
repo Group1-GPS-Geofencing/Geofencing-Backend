@@ -31,12 +31,15 @@ public class Location {
             generator = "location_sequence"
     )
     @Column(name = "id")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "time")
+    @JsonProperty("time")
     private Timestamp time;
 
     @Column(name = "point", columnDefinition = "geometry")
+    @JsonProperty("point")
     private Point point;
 
     // Assuming many locations can belong to one route,
@@ -44,6 +47,7 @@ public class Location {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", nullable = true)
     @JsonBackReference
+    @JsonProperty("route")
     private Route route;
 
 

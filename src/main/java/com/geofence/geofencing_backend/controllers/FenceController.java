@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "/api/v1/fence")
+@RequestMapping(path = "/api/v1/fence", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FenceController {
 
 
@@ -70,7 +70,7 @@ public class FenceController {
             "is_active": true
         }
      */
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Fence> createLocation(@RequestBody Fence fence) {
         Fence createdFence = fenceService.createFence(fence);
         return new ResponseEntity<>(createdFence, HttpStatus.CREATED);
@@ -149,7 +149,7 @@ public class FenceController {
             "is_active": false
         }
      */
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Fence> updateFence(@PathVariable Long id, @RequestBody Fence fence) {
         fence.setId(id);
         Fence updatedFence = fenceService.updateFence(fence);
@@ -163,7 +163,7 @@ public class FenceController {
 
         i.e., http://localhost:8080/api/v1/fence/2
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteFence(@PathVariable Long id) {
         fenceService.deleteFence(id);
         return ResponseEntity.noContent().build();
