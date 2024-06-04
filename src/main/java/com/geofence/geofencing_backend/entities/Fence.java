@@ -42,7 +42,7 @@ public class Fence {
     private Boolean isActive;
 
     @OneToMany(mappedBy = "fence", cascade = CascadeType.ALL)
-    @JsonProperty("fence")
+    @JsonProperty("logs")
     private List<EventLog> logs;
 
 
