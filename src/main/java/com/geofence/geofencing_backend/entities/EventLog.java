@@ -8,6 +8,7 @@ package com.geofence.geofencing_backend.entities;
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -44,7 +45,7 @@ public class EventLog {
 
     @ManyToOne
     @JoinColumn(name = "fence_id")
-    @JsonProperty("fence_id")
+    @JsonBackReference
     private Fence fence;
 
     //added no arg constructor implicitly to overcome a runtime error that requires it
