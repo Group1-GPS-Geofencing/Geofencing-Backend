@@ -129,6 +129,13 @@
             <version>6.1.8</version>
         </dependency>
 
+    <!--   PostGIS dependency    -->
+        <dependency>
+            <groupId>net.postgis</groupId>
+            <artifactId>postgis-jdbc</artifactId>
+            <version>2023.1.0</version>
+        </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
