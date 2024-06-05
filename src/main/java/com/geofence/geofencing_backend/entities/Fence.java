@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.entities;
  * Fence entity
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 26-03-2024
- * Last Modified on: 25-04-2024
+ * Last Modified on: 5-06-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -21,6 +21,7 @@ import java.util.List;
 public class Fence {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @JsonProperty("id")
     private Long id;

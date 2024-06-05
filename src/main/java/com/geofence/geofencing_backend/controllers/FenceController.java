@@ -4,7 +4,7 @@ package com.geofence.geofencing_backend.controllers;
  * Fence Controller
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 27-03-2024
- * Last Modified on: 25-05-2024
+ * Last Modified on: 5-06-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -71,7 +71,7 @@ public class FenceController {
         }
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Fence> createLocation(@RequestBody Fence fence) {
+    public ResponseEntity<Fence> createFence(@RequestBody Fence fence) {
         Fence createdFence = fenceService.createFence(fence);
         return new ResponseEntity<>(createdFence, HttpStatus.CREATED);
     }
@@ -82,7 +82,7 @@ public class FenceController {
         Receives the id parameter to return a specific fence instance if it exists
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Fence> getEventLogById(@PathVariable Long id) {
+    public ResponseEntity<Fence> getFenceById(@PathVariable Long id) {
         Fence fence = fenceService.getFenceByID(id);
         if (fence != null) {
             return ResponseEntity.ok(fence);
@@ -97,7 +97,7 @@ public class FenceController {
         Receives no parameters to return a list of all fences instances
      */
     @GetMapping
-    public ResponseEntity<List<Fence>> getAllEventLogs() {
+    public ResponseEntity<List<Fence>> getAllFences() {
         List<Fence> fences = fenceService.getAllFences();
         if (!fences.isEmpty()) {
             return ResponseEntity.ok(fences);
