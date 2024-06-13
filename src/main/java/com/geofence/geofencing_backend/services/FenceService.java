@@ -29,6 +29,9 @@ public class FenceService {
      * @return The saved Fence object.
      */
     public Fence createFence(Fence fence){
+        if (fence.getIsActive()) {
+            deactivateAllFences();
+        }
         return fenceRepository.save(fence);
     }
 
@@ -73,6 +76,10 @@ public class FenceService {
         if (fence.getId() == null || !fenceRepository.existsById(fence.getId())) {
             throw new IllegalArgumentException("Fence not found");
         }
+
+        if (fence.getIsActive()) {
+            deactivateAllFences();
+        }
         return fenceRepository.save(fence);
     }
 
@@ -83,6 +90,20 @@ public class FenceService {
      */
     public void deleteFence(Long id){
         fenceRepository.deleteById(id);
+    }
+
+    /**
+     * Helper method to deactivate all fences.
+     * Sets the isActive field of all fences to false.
+     */
+    private void deactivateAllFences() {
+        List<Fence> fences = fenceRepository.findAll();
+        for (Fence f : fences) {
+            if (f.getIsActive()) {
+                f.setIsActive(false);
+                fenceRepository.save(f);
+            }
+        }
     }
 
 }
