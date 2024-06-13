@@ -1,13 +1,5 @@
 package com.geofence.geofencing_backend.controllers;
 
-/*
- * Location Controller
- * Author: James Kalulu (Bsc-com-ne-21-19)
- * Created on: 27-03-2024
- * Last Modified on: 05-05-2024
- * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
- */
-
 import com.geofence.geofencing_backend.entities.Location;
 import com.geofence.geofencing_backend.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +7,14 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+/**
+ * Location Controller
+ * Author: James Kalulu (Bsc-com-ne-21-19)
+ * Created on: 27-03-2024
+ * Last Modified on: 13-06-2024
+ * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
+ */
 
 
 @RestController
@@ -25,28 +25,35 @@ public class LocationController {
     @Autowired
     private final LocationService locationService;
 
-    //arg constructor
+    /**
+     * Constructor for LocationController.
+     *
+     * @param locationService the service to manage locations
+     */
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
 
 
-    /*
-        HTTP POST request handler
-        i.e., http://localhost:8080/api/v1/location
 
-        Receives the following parameters to create a location instance
 
-        {
-            "time": "2024-04-25T12:00:00Z",
-            "point": {
-                "type": "Point",
-                "coordinates": [
-                    -10.0,
-                    20.0
-                ]
-            }
-        }
+    /**
+     * Handles HTTP POST requests to create a new location.
+     * <p>
+     * Example request:
+     * POST <a href="http://localhost:8080/api/v1/location">...</a>
+     * {
+     * "time": "2024-04-25T12:00:00Z",
+     * "point": {
+     * "type": "Point",
+     * "coordinates": [
+     * -10.0, 20.0
+     * ]
+     * }
+     * }
+     *
+     * @param location the location to be created
+     * @return the created location
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Location> createLocation(@RequestBody Location location) {
@@ -55,11 +62,15 @@ public class LocationController {
     }
 
 
-    /*
-        HTTP GET/id request handler
-        i.e., http://localhost:8080/api/v1/location/2
 
-        Receives the id parameter to return a specific location instance if it exists
+    /**
+     * Handles HTTP GET requests to retrieve a location by its ID.
+     * <p>
+     * Example request:
+     * GET <a href="http://localhost:8080/api/v1/location/2">...</a>
+     *
+     * @param id the ID of the location to retrieve
+     * @return the location with the specified ID, or 404 if not found
      */
     @GetMapping("/{id}")
     public ResponseEntity<Location> getLocationById(@PathVariable Long id) {
@@ -72,9 +83,10 @@ public class LocationController {
     }
 
 
-    /*
-        HTTP GET request handler
-        Receives no parameters to return a list of all location instances
+    /**
+     * Handles HTTP GET requests to retrieve all locations.
+     *
+     * @return a list of all locations, or 204 if none exist
      */
     @GetMapping
     public ResponseEntity<List<Location>> getAllLocations() {
@@ -87,22 +99,26 @@ public class LocationController {
     }
 
 
-    /*
-        HTTP PUT/id request handler
-        i.e., http://localhost:8080/api/v1/location/2
 
-        Receives the id parameters to update a location instance by id if it exists
 
-        {
-            "time": "2024-04-25T12:00:00Z",
-            "point": {
-                "type": "Point",
-                "coordinates": [
-                    -10.0,
-                    20.0
-                ]
-            }
-        }
+    /**
+     * Handles HTTP PUT requests to update a location by its ID.
+     * <p>
+     * Example request:
+     * PUT <a href="http://localhost:8080/api/v1/location/2">...</a>
+     * {
+     * "time": "2024-04-25T12:00:00Z",
+     * "point": {
+     * "type": "Point",
+     * "coordinates": [
+     * -10.0, 20.0
+     * ]
+     * }
+     * }
+     *
+     * @param id       the ID of the location to update
+     * @param location the updated location
+     * @return the updated location
      */
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody Location location) {
@@ -112,11 +128,15 @@ public class LocationController {
     }
 
 
-    /*
-        HTTP DELETE/id request handler
-        Receives the id parameter to delete a location instance by id if it exists
 
-        i.e., http://localhost:8080/api/v1/location/2
+    /**
+     * Handles HTTP DELETE requests to delete a location by its ID.
+     * <p>
+     * Example request:
+     * DELETE <a href="http://localhost:8080/api/v1/location/2">...</a>
+     *
+     * @param id the ID of the location to delete
+     * @return a response entity with no content
      */
     @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {

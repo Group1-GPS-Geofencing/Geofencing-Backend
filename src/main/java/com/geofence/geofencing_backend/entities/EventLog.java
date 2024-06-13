@@ -1,13 +1,5 @@
 package com.geofence.geofencing_backend.entities;
 
-/*
- * Fence entity
- * Author: James Kalulu (Bsc-com-ne-21-19)
- * Created on: 26-03-2024
- * Last Modified on: 25-04-2024
- * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
- */
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +7,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
+
+/**
+ * EventLog entity
+ * Author: James Kalulu (Bsc-com-ne-21-19)
+ * Created on: 26-03-2024
+ * Last Modified on: 13-06-2024
+ * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
+ */
 
 @Data
 @Entity
@@ -48,12 +48,20 @@ public class EventLog {
     @JsonBackReference
     private Fence fence;
 
-    //added no arg constructor implicitly to overcome a runtime error that requires it
+    /**
+     * Default no-args constructor.
+     */
     public EventLog(){
-
+        // Default constructor
     }
 
-    //args constructor
+    /**
+     * Argument constructor to create an EventLog with specified time, message, and fence.
+     *
+     * @param time        the time of the event
+     * @param message     the message in relation to the event
+     * @param fence       the fence associated with the event
+     */
     @JsonCreator
     public EventLog(@JsonProperty("time") Timestamp time,
                     @JsonProperty("message") String message,

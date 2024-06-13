@@ -1,13 +1,5 @@
 package com.geofence.geofencing_backend.services;
 
-/* FirebaseService
- * Author: James Kalulu (Bsc-com-ne-21-19)
- * Created on: 02-05-2024
- * Last Modified on: 28-05-2024
- * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
- *
- * Service for Retrieving currentLocation Data from Firebase Firestore cloud service
- */
 
 import com.geofence.geofencing_backend.entities.Location;
 import com.geofence.geofencing_backend.entities.Route;
@@ -23,6 +15,16 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+
+/**
+ * FirebaseService
+ * Author: James Kalulu (Bsc-com-ne-21-19)
+ * Created on: 02-05-2024
+ * Last Modified on: 13-06-2024
+ * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
+ * <p>
+ * Service for Retrieving currentLocation Data from Firebase Firestore cloud service
+ */
 
 @Service
 public class FirebaseService {
@@ -55,12 +57,11 @@ public class FirebaseService {
         GeometryFactory geometryFactory = new GeometryFactory(new PackedCoordinateSequenceFactory());
 
         // Get a reference to the Firebase Firestore database
+        // Reference to the "Current Location" collection in the Firebase Firestore database
         Firestore firestore = FirestoreClient.getFirestore(firebaseApp);
-
-        // Reference to the "locations" collection in the Firebase Firestore database
         CollectionReference locationsCollectionReference = firestore.collection("Current Location");
 
-        // Add a snapshot listener for changes to the "locations" collection
+        // Add a snapshot listener for changes to the "Current Location" collection
         locationsCollectionReference.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
                 // Handle errors
@@ -73,17 +74,14 @@ public class FirebaseService {
 
                 // Extract data from the document
                 Timestamp time = doc.getTimestamp("time").toSqlTimestamp();
-                GeoPoint position = doc.getGeoPoint("position"); //GeoPoint contains foelds lat & longitude
+                GeoPoint position = doc.getGeoPoint("position"); //GeoPoint contains fields lat & longitude
                 double latitude = position.getLatitude();
                 double longitude = position.getLongitude();
 
-                // Create a Coordinate object using the latitude and longitude
                 Coordinate coordinate = new Coordinate(latitude, longitude);
 
                 // Create a CoordinateSequence using the Coordinate
                 CoordinateSequence coordinates = new CoordinateArraySequence(new Coordinate[]{coordinate});
-
-                // Create a Point using the GeometryFactory and CoordinateSequence
                 Point point = new Point(coordinates, geometryFactory);
 
 
@@ -100,13 +98,7 @@ public class FirebaseService {
                     locationRepository.save(location);
                     logger.info("Saved location: " + location.toString());
 
-
-                    logger.info("Adding location to route: " + route.toString());
-                    // Update the route with the new location's coordinates
-                    route.addLocation(location);
-                    logger.info("added location to route");
                     routeService.updateRouteWithLocationCoordinates(route, point);
-
                     fenceMonitoringService.monitorFenceEntryExit(location);
 
                     logger.info("Saved Location: " + location);
@@ -119,7 +111,13 @@ public class FirebaseService {
         });
     }
 
-    // checks if a location point and timestamp already exists in DB
+    /**
+     * Checks if a location with the given timestamp and point already exists in the database.
+     *
+     * @param time  The timestamp of the location.
+     * @param point The point (coordinates) of the location.
+     * @return true if the location exists, false otherwise.
+     */
     private boolean locationExists(Timestamp time, Point point) {
         return locationRepository.existsByTimeAndPoint(time, point);
     }

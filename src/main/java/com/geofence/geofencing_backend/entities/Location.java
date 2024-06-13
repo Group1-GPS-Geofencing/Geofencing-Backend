@@ -1,19 +1,19 @@
 package com.geofence.geofencing_backend.entities;
 
-/*
- * Location entity
- * Author: James Kalulu (Bsc-com-ne-21-19)
- * Created on: 26-03-2024
- * Last Modified on: 28-05-2024
- * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
- */
-
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.locationtech.jts.geom.Point;
 
 import java.sql.Timestamp;
+
+/**
+ * Location entity
+ * Author: James Kalulu (Bsc-com-ne-21-19)
+ * Created on: 26-03-2024
+ * Last Modified on: 13-06-2024
+ * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
+ */
 
 @Data
 @Entity
@@ -42,21 +42,29 @@ public class Location {
     @JsonProperty("point")
     private Point point;
 
-    // Assuming many locations can belong to one route,
-    // FetchType.LAZY indicates that the route information will be fetched lazily when accessed
+    /**
+     * Many locations can belong to one route. FetchType.LAZY indicates that
+     * the route information will be fetched lazily when accessed.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", nullable = true)
     @JsonBackReference
     @JsonProperty("route")
     private Route route;
 
-
-    //added no arg constructor implicitly to overcome a runtime error that requires it
+    /**
+     * Default no-args constructor.
+     */
     public Location(){
-
+        // Default constructor
     }
 
-    //args constructor
+    /**
+     * Argument constructor to create a Location with specified time and point.
+     *
+     * @param time  the timestamp of the location
+     * @param point the geographical point of the location
+     */
     @JsonCreator
     public Location(@JsonProperty("time") Timestamp time,
                     @JsonProperty("point") Point point) {
