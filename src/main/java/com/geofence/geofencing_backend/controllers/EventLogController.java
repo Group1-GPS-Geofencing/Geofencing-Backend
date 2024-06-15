@@ -1,61 +1,71 @@
 package com.geofence.geofencing_backend.controllers;
 
-/*
- * Log Controller
- * Author: James Kalulu (Bsc-com-ne-21-19)
- * Created on: 27-03-2024
- * Last Modified on: 25-04-2024
- * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
- */
-
 import com.geofence.geofencing_backend.entities.EventLog;
 import com.geofence.geofencing_backend.services.EventLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Log Controller
+ * Author: James Kalulu (Bsc-com-ne-21-19)
+ * Created on: 27-03-2024
+ * Last Modified on: 13-06-2024
+ * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
+ */
 
 @RestController
-@RequestMapping(path = "/api/v1/logs")
+@RequestMapping(path = "/api/v1/logs", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EventLogController {
 
 
     @Autowired
     private final EventLogService eventLogService;
 
-    //arg constructor
+    /**
+     * Constructor for EventLogController.
+     *
+     * @param eventLogService the service to manage event logs
+     */
     public EventLogController(EventLogService eventLogService) {
         this.eventLogService = eventLogService;
     }
 
 
-    /*
-        HTTP POST request handler
-        i.e., http://localhost:8080/api/v1/logs
 
-        Receives the following parameters to create a currentLocation instance
-
-        {
-            "time": "2024-04-25T12:00:00Z",
-            "message": "Hello Mom",
-            "fence": null
-        }
+    /**
+     * Handles HTTP POST requests to create a new event log.
+     * <p>
+     * Example request:
+     * POST <a href="http://localhost:8080/api/v1/logs">...</a>
+     * {
+     * "time": "2024-04-25T12:00:00Z",
+     * "message": "Hello Mom",
+     * "fence": null
+     * }
+     *
+     * @param eventLog the event log to be created
+     * @return the created event log
      */
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EventLog> createLocation(@RequestBody EventLog eventLog) {
         EventLog createdEventLog = eventLogService.createEventLog(eventLog);
         return new ResponseEntity<>(createdEventLog, HttpStatus.CREATED);
     }
 
 
-    /*
-        HTTP GET/id request handler
-        i.e., http://localhost:8080/api/v1/logs/1
-
-        Receives the id parameter to return a specific eventLog instance if it exists
+    /**
+     * Handles HTTP GET requests to retrieve an event log by its ID.
+     * <p>
+     * Example request:
+     * GET <a href="http://localhost:8080/api/v1/logs/1">...</a>
+     *
+     * @param id the ID of the event log to retrieve
+     * @return the event log with the specified ID, or 404 if not found
      */
     @GetMapping("/{id}")
     public ResponseEntity<EventLog> getEventLogById(@PathVariable Long id) {
@@ -68,11 +78,14 @@ public class EventLogController {
     }
 
 
-    /*
-        HTTP GET request handler
-        i.e., http://localhost:8080/api/v1/logs
 
-        Receives no parameters to return a list of all eventLogs instances
+    /**
+     * Handles HTTP GET requests to retrieve all event logs.
+     * <p>
+     * Example request:
+     * GET <a href="http://localhost:8080/api/v1/logs">...</a>
+     *
+     * @return a list of all event logs, or 204 if none exist
      */
     @GetMapping
     public ResponseEntity<List<EventLog>> getAllEventLogs() {
@@ -85,13 +98,17 @@ public class EventLogController {
     }
 
 
-    /*
-        HTTP DELETE/id request handler
-        i.e., http://localhost:8080/api/v1/logs/1
 
-        Receives the id parameter to delete an eventLog  instance by id if it exists
+    /**
+     * Handles HTTP DELETE requests to delete an event log by its ID.
+     * <p>
+     * Example request:
+     * DELETE <a href="http://localhost:8080/api/v1/logs/1">...</a>
+     *
+     * @param id the ID of the event log to delete
+     * @return a response entity with no content
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteEventLog(@PathVariable Long id) {
         eventLogService.deleteEventLog(id);
         return ResponseEntity.noContent().build();

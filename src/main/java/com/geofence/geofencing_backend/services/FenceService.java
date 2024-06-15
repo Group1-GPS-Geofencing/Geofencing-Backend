@@ -1,14 +1,5 @@
 package com.geofence.geofencing_backend.services;
 
-/*
- * Fence Service
- * Author: James Kalulu (Bsc-com-ne-21-19)
- * Created on: 27-03-2024
- * Last Modified on: 28-03-2024
- * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
- */
-
-import com.geofence.geofencing_backend.entities.CurrentLocation;
 import com.geofence.geofencing_backend.entities.Fence;
 import com.geofence.geofencing_backend.repositories.FenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Fence Service.
+ * Service class for managing Fence entities.
+ * Author: James Kalulu (Bsc-com-ne-21-19)
+ * Created on: 27-03-2024
+ * Last Modified on: 13-06-2024
+ * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
+ */
 
 @Service
 public class FenceService {
@@ -23,45 +22,88 @@ public class FenceService {
     @Autowired
     private FenceRepository fenceRepository;
 
-    //creates a fence
+    /**
+     * Saves a new Fence entity.
+     *
+     * @param fence The Fence object to be saved.
+     * @return The saved Fence object.
+     */
     public Fence createFence(Fence fence){
+        if (fence.getIsActive()) {
+            deactivateAllFences();
+        }
         return fenceRepository.save(fence);
     }
 
-    //returns a fence after querying by ID
+    /**
+     * Retrieves a Fence by its ID.
+     *
+     * @param id The ID of the Fence to retrieve.
+     * @return The found Fence, or null if not found.
+     */
     public Fence getFenceByID(Long id){
         return fenceRepository.findById(id).orElse(null);
     }
 
-    //returns all fences
+    /**
+     * Retrieves all Fence entities.
+     *
+     * @return A list of all Fence entities.
+     */
     public List<Fence> getAllFences(){
         return fenceRepository.findAll();
     }
 
-    //return active fence
-    //only one fence will be active at a time
+    /**
+     * Retrieves the active Fence.
+     * Only one Fence can be active at a time.
+     *
+     * @return The active Fence, or null if none is active.
+     */
     public Fence getActiveFence(){
             return fenceRepository.findByIsActiveTrue();
     }
 
-    //update fence
+    /**
+     * Updates an existing Fence.
+     *
+     * @param fence The updated Fence object.
+     * @return The updated Fence object.
+     * @throws IllegalArgumentException If the Fence ID is null or does not exist in the database.
+     */
     public Fence updateFence(Fence fence){
         // Check if the fence exists
         if (fence.getId() == null || !fenceRepository.existsById(fence.getId())) {
             throw new IllegalArgumentException("Fence not found");
         }
+
+        if (fence.getIsActive()) {
+            deactivateAllFences();
+        }
         return fenceRepository.save(fence);
     }
 
-    //delete fence
+    /**
+     * Deletes a Fence by its ID.
+     *
+     * @param id The ID of the Fence to delete.
+     */
     public void deleteFence(Long id){
         fenceRepository.deleteById(id);
     }
 
-    //checks if the active fence is breached or not basing on the current location
-    //as of now this method will be void since Logic is not yet implemented
-    public void isFenceBreached(CurrentLocation currentLocation){
-        //TODO: Implement Logic, including method signature
+    /**
+     * Helper method to deactivate all fences.
+     * Sets the isActive field of all fences to false.
+     */
+    private void deactivateAllFences() {
+        List<Fence> fences = fenceRepository.findAll();
+        for (Fence f : fences) {
+            if (f.getIsActive()) {
+                f.setIsActive(false);
+                fenceRepository.save(f);
+            }
+        }
     }
 
 }
