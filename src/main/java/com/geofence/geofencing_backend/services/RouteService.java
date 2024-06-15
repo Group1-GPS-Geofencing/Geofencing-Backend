@@ -20,7 +20,7 @@ import java.util.List;
  * Route Service
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 25-04-2024
- * Last Modified on: 13-06-2024
+ * Last Modified on: 14-06-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -124,64 +124,25 @@ public class RouteService {
     }
 
     /**
-     * Updates the given route by appending a new point (pair of coordinates).
+     * Updates the route with the given location coordinates.
      *
-     * @param route   the route to be updated
-     * @param newPoint the new point to be appended
+     * @param route  the route to update
+     * @param point  the point to add to the route's LineString
      */
-    @Transactional
-    public void updateRouteWithLocationCoordinates(Route route, Point newPoint) {
-        logger.info("Starting update of route with new point: " + newPoint);
+    public void updateRouteWithLocationCoordinates(Route route, Point point) {
+        Long routeId = route.getId();
+        double latitude = point.getX();
+        double longitude = point.getY();
 
-        // Save the new point to the database using a native query
-        updatePointsPostGIS(route.getId(), newPoint);
-        entityManager.refresh(route);
-        route.addLocation(new Location(new Timestamp(System.currentTimeMillis()), newPoint));
-        Route updatedRoute = routeRepository.save(route);
-        logger.info("Route successfully updated and saved: " + updatedRoute);
+        if (routeRepository.getNumberOfPointsInRoute(routeId) == 0) {
+            // Initialize the route with the same point twice since we can't initialize a line string with less than 2 points
+            logger.info("0 points in linestring --initialize route");
+            routeRepository.initializeRoutePoints(routeId, longitude, latitude);
+
+        } else {
+            routeRepository.addPointToRoute(routeId, longitude, latitude);
+            logger.info("linestring not empty -- added point");
+        }
     }
 
-    /**
-     * Helper method to append coordinates to a LineString.
-     * Method is not used but kept for future reference
-     *
-     * @param lineString the existing LineString
-     * @param newPoint   the new point to be appended
-     * @return the updated LineString
-     */
-    private LineString appendCoordinate(LineString lineString, Point newPoint) {
-        // Extract the coordinates from the existing LineString
-        Coordinate[] existingCoordinates = lineString.getCoordinates();
-
-        // Create a new array to hold the updated coordinates
-        Coordinate[] updatedCoordinates = new Coordinate[existingCoordinates.length + 1];
-
-        // Copy the existing coordinates to the updated array
-        System.arraycopy(existingCoordinates, 0, updatedCoordinates, 0, existingCoordinates.length);
-
-        // Append the new coordinate to the end of the array
-        updatedCoordinates[existingCoordinates.length] = newPoint.getCoordinate();
-
-        // Create a new LineString with the updated coordinates
-        GeometryFactory geometryFactory = new GeometryFactory();
-        LineString updatedLineString = geometryFactory.createLineString(updatedCoordinates);
-        logger.info("Appending coordinate: " + newPoint.getCoordinate() + " to LineString. Updated LineString: " + updatedLineString);
-        return updatedLineString;
-    }
-
-    /**
-     * Helper method for updating LineString points in PostGIS.
-     *
-     * @param routeId the ID of the route
-     * @param newPoint the new point to be added
-     */
-    private void updatePointsPostGIS(Long routeId, Point newPoint) {
-        String sql = "UPDATE Route SET points = ST_AddPoint(points, ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)) WHERE id = :routeId";
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("longitude", newPoint.getX());
-        query.setParameter("latitude", newPoint.getY());
-        query.setParameter("routeId", routeId);
-        query.executeUpdate();
-        logger.info("Updated points in PostGIS for routeId: " + routeId);
-    }
 }

@@ -13,7 +13,7 @@ import java.util.*;
  * Route entity
  * Author: James Kalulu (Bsc-com-ne-21-19)
  * Created on: 17-04-2024
- * Last Modified on: 13-06-2024
+ * Last Modified on: 14-06-2024
  * Last Modified by: James Kalulu (Bsc-com-ne-21-19)
  */
 
@@ -67,42 +67,6 @@ public class Route {
         this.name = name;
         this.date = date;
         this.points = points;
-    }
-
-    /**
-     * Adds a location to the route and sets the route in the location.
-     *
-     * @param location the location to be added
-     */
-    public void addLocation(Location location) {
-        locations.add(location);
-        location.setRoute(this);
-
-        //update logic will now be done in Service layer
-        //todo: fix bug, points linestring is never updated, always Empty
-        logger.info("Location added to route: " + location);
-    }
-
-    /**
-     * Updates the points of the route based on the locations.
-     * This method is no longer used but kept for future reference.
-     */
-    // todo: fix bugs here
-    private void updatePoints() {
-        Coordinate[] coordinates = locations.stream()
-                .map(location -> new Coordinate(location.getPoint().getX(), location.getPoint().getY()))
-                .toArray(Coordinate[]::new);
-        logger.info("Updating Points: Initialised Coordinate Array");
-        if (coordinates.length > 0) {
-            logger.info("Coordinate Array size > 0 & points are: " + Arrays.toString(coordinates));
-            this.points = new GeometryFactory().createLineString(coordinates);
-            logger.info("Updated Points in route: " + Arrays.toString(coordinates));
-        }
-        else {
-            logger.info("Coordinate Array size !> 0");
-            logger.info("Failed to Update Linestring: ");
-        }
-        logger.info("Points Updated");
     }
 
 }
