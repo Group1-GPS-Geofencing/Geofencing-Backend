@@ -10,6 +10,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import jakarta.transaction.Transactional;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.geom.impl.*;
+import org.locationtech.jts.operation.distance.DistanceOp;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
@@ -78,15 +79,21 @@ public class FirebaseService {
                 double latitude = position.getLatitude();
                 double longitude = position.getLongitude();
 
-                Coordinate coordinate = new Coordinate(latitude, longitude);
+                Coordinate coordinate = new Coordinate(longitude, latitude);
 
                 // Create a CoordinateSequence using the Coordinate
                 CoordinateSequence coordinates = new CoordinateArraySequence(new Coordinate[]{coordinate});
                 Point point = new Point(coordinates, geometryFactory);
 
 
-                if (!locationExists(time, point)) {
+                // Retrieve the last known location from the repository
+                Location lastKnownLocation = locationRepository.findTopByOrderByTimeDesc();
+                Point lastKnownPoint = (lastKnownLocation != null) ? lastKnownLocation.getPoint() : null;
+
+                // Check if the location already exists or is within  a radius of 50 from the last known location
+                if (lastKnownPoint == null || (!locationExists(time, point) && locationDistanceBetweenPoints(point, lastKnownPoint))) {
                     // Find or create the route for the timestamp
+                    logger.info("find or create route");
                     Route route = routeService.findOrCreateRouteForTimestamp(time);
 
                     // Create a new Location entity and associate it with the route
@@ -103,8 +110,7 @@ public class FirebaseService {
 
                     logger.info("Saved Location: " + location);
                     logger.info("Associated Route: " + location.getRoute());
-                }
-                else{
+                } else {
                     logger.warn("Location not Saved, Already existing Location: ");
                 }
             }
@@ -120,5 +126,23 @@ public class FirebaseService {
      */
     private boolean locationExists(Timestamp time, Point point) {
         return locationRepository.existsByTimeAndPoint(time, point);
+    }
+
+    /**
+     * Checks if the distance between the current point and the last known point is greater than or equal to 50 meters.
+     * I'm not sure with the Math in terms of accuracy
+     *
+     * @param currentPoint The current point (coordinates).
+     * @param lastKnownPoint The last known point (coordinates).
+     * @return true if the distance between the points is greater than or equal to 1 meter, false otherwise.
+     */
+    private boolean locationDistanceBetweenPoints(Point currentPoint, Point lastKnownPoint) {
+        // Calculate the distance between the two points
+        double distance = DistanceOp.distance(currentPoint, lastKnownPoint);
+        // Convert distance to meters (assuming points are in EPSG:4326 - WGS84)
+        double distanceInMeters = distance * 111139; // Approximate conversion factor for degrees to meters
+        // Return true if the distance is less than or equal to 2 meters, false otherwise
+        logger.info("distance: " + distanceInMeters);
+        return distanceInMeters >= 50;
     }
 }

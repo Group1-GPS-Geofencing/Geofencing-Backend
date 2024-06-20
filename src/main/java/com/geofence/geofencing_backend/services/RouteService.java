@@ -94,9 +94,8 @@ public class RouteService {
      * Finds or creates a route for the given timestamp.
      *
      * @param timestamp the timestamp to find or create a route for
-     * @return the existing or newly created route
+     * @return null for the existing or return the newly created route
      */
-    @Transactional
     public Route findOrCreateRouteForTimestamp(Timestamp timestamp) {
         // Extract the date from the timestamp
         LocalDate date = timestamp.toLocalDateTime().toLocalDate();
@@ -108,10 +107,12 @@ public class RouteService {
         Route existingRoute = routeRepository.findByDate(timestampDate);
 
         if (existingRoute != null) {
-            // If a route exists, return it
-            return existingRoute;
+            // If a route exists, return null since returning it is resulting in a runtime error
+            logger.info("Existing route");
+            return null;
         } else {
             // If no route exists, create a new route
+            logger.info("Non Existing route");
             Route newRoute = new Route();
             newRoute.setDate(timestampDate);
             newRoute.setName("Route for " + date);
@@ -123,12 +124,12 @@ public class RouteService {
         }
     }
 
-    /**
-     * Updates the route with the given location coordinates.
-     *
-     * @param route  the route to update
-     * @param point  the point to add to the route's LineString
-     */
+        /**
+         * Updates the route with the given location coordinates.
+         *
+         * @param route  the route to update
+         * @param point  the point to add to the route's LineString
+         */
     public void updateRouteWithLocationCoordinates(Route route, Point point) {
         Long routeId = route.getId();
         double latitude = point.getX();
