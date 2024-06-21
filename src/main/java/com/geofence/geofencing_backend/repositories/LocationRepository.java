@@ -27,4 +27,11 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
      * @return true if a location exists with the given timestamp and point, otherwise false.
      */
     boolean existsByTimeAndPoint(Timestamp time, Point point);
+
+    /**
+     * Retrieves the most recent location entry.
+     *
+     * @return The most recent location entry.
+     */
+    Location findTopByOrderByTimeDesc();
 }

@@ -38,3 +38,4 @@ mvnw
 mvnw.cmd
 .mvn/
 /config/
+/src/main/java/com/geofence/geofencing_backend/config/DatabaseInitializer.java

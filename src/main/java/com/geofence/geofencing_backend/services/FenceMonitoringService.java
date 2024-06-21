@@ -50,7 +50,7 @@ public class FenceMonitoringService {
             return;
         }
 
-        logger.info("Active fences: " + activeFence.toString());
+        logger.info("Active fence found");
         // Check if the location falls within the fence boundary
         if (isInsideFence(location.getPoint(), activeFence.getBoundary())) {
             // User entered the fence, trigger entry logic
