@@ -105,7 +105,7 @@ public class FirebaseService {
                     locationRepository.save(location);
                     logger.info("Saved location: " + location.toString());
 
-                    routeService.updateRouteWithLocationCoordinates(route, point);
+//                    routeService.updateRouteWithLocationCoordinates(route, point);
                     fenceMonitoringService.monitorFenceEntryExit(location);
 
                     logger.info("Saved Location: " + location);
